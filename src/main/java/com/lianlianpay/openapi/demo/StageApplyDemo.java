@@ -16,7 +16,7 @@ public class StageApplyDemo {
         String timestamp = LLianPayDateUtils.getTimestamp();
         StageApplyParams params = new StageApplyParams();
         params.setMch_id(LLianPayConstant.MCHID);
-        params.setUser_id("chunqiu-test-aabbcc");
+        params.setUser_id("");
         params.setTxn_seqno("LLianPay-Test-" + timestamp);
         params.setTxn_time(timestamp);
         params.setOrder_amount(4000.00);
@@ -26,7 +26,8 @@ public class StageApplyDemo {
         params.setDiscount_mode("merchant");
 
         CardInfo card_info = new CardInfo();
-        card_info.setAgree_no("202403125553764800");
+        // 填写信用卡鉴权接口鉴权成后的协议号
+        card_info.setAgree_no("");
         params.setCard_info(card_info);
 
         StageInfo stageInfo = new StageInfo();
@@ -39,6 +40,7 @@ public class StageApplyDemo {
         String resultJsonStr = lLianPayClient.sendRequest(url, JSON.toJSONString(params));
         StageApplyResult stageApplyResult = JSONObject.parseObject(resultJsonStr, StageApplyResult.class);
 
+        //测试环境实际不下发短信，输入任意6位短信验证码
         String verifyCode = "123456";
         if (!"".equals(stageApplyResult.getToken())) {
             StageVerifyParams verifyParams = new StageVerifyParams();

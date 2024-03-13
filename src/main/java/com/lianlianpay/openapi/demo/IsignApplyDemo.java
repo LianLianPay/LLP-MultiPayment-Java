@@ -16,16 +16,17 @@ public class IsignApplyDemo {
         String timestamp = LLianPayDateUtils.getTimestamp();
         IsignApplyParams params = new IsignApplyParams();
         params.setMch_id(LLianPayConstant.MCHID);
-        params.setUser_id("chunqiu-test-aabbcc");
+        params.setUser_id("");
         params.setTxn_seqno("LLianPayTest-MP-" + timestamp);
         params.setTxn_time(timestamp);
 
+        // 输入银行卡四要素信息
         CardInfo cardInfo = new CardInfo();
         cardInfo.setId_type("IDCARD");
-        cardInfo.setId_no(LLianPayMultiPaymentSignature.getInstance().localEncrypt("430381200102077799"));
-        cardInfo.setAcct_name(LLianPayMultiPaymentSignature.getInstance().localEncrypt("董思奇"));
-        cardInfo.setBind_phone(LLianPayMultiPaymentSignature.getInstance().localEncrypt("13208002572"));
-        cardInfo.setCard_no(LLianPayMultiPaymentSignature.getInstance().localEncrypt("6225766629655392"));
+        cardInfo.setId_no(LLianPayMultiPaymentSignature.getInstance().localEncrypt(""));
+        cardInfo.setAcct_name(LLianPayMultiPaymentSignature.getInstance().localEncrypt(""));
+        cardInfo.setBind_phone(LLianPayMultiPaymentSignature.getInstance().localEncrypt(""));
+        cardInfo.setCard_no(LLianPayMultiPaymentSignature.getInstance().localEncrypt(""));
         params.setCard_info(cardInfo);
 
         String url = "https://test.lianlianpay-inc.com/mch/v1/isign/apply";
@@ -33,12 +34,14 @@ public class IsignApplyDemo {
         String resultJsonStr = lLianPayClient.sendRequest(url, JSON.toJSONString(params));
         IsignApplyResult isignApplyResult = JSONObject.parseObject(resultJsonStr, IsignApplyResult.class);
         System.out.println(isignApplyResult);
+
+        //测试环境实际不下发短信，输入任意6位短信验证码
         String verifyCode = "123456";
         if (!"".equals(isignApplyResult.getToken())) {
             IsignVerifyParams verifyParams = new IsignVerifyParams();
             verifyParams.setToken(isignApplyResult.getToken());
             verifyParams.setMch_id(LLianPayConstant.MCHID);
-            verifyParams.setUser_id("chunqiu-test-aabbcc");
+            verifyParams.setUser_id("");
             verifyParams.setVerify_code(verifyCode);
 
             String url1 = "https://test.lianlianpay-inc.com/mch/v1/isign/verify";
